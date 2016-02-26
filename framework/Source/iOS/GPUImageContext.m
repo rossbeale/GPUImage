@@ -262,7 +262,13 @@ static void *openGLESContextQueueKey;
     
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wtautological-pointer-compare"
-    return (CVOpenGLESTextureCacheCreate != NULL);
+    float ver = [[[UIDevice currentDevice] systemVersion] floatValue];
+    NSString* formattedVersion = [NSString stringWithFormat:@"%.01f", ver];
+    if ([formattedVersion isEqualToString:@"8.3"]) {
+        return NO; // Hack Julien https://github.com/BradLarson/GPUImage/issues/2041
+    } else {
+        return (CVOpenGLESTextureCacheCreate != NULL);
+    }
 #pragma clang diagnostic pop
 
 #endif
